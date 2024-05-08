@@ -26,7 +26,9 @@ async function requestDevice() {
   // const _options = { filters: [{ services: ["heart_rate"] }] };
 
   const options = {
-    acceptAllDevices: true,
+    filters: [{
+      name: 'Bluno'
+    }],
     // optionalServices: ["heart_rate"],
   };
   device = await navigator.bluetooth.requestDevice(options);
