@@ -23,11 +23,11 @@ function handleRateChange(event) {
 
 async function requestDevice() {
   //only works for devices advertising heart rate service
-  const _options = { filters: [{ services: ["heart_rate"] }] };
+  // const _options = { filters: [{ services: ["heart_rate"] }] };
 
   const options = {
     acceptAllDevices: true,
-    optionalServices: ["heart_rate"],
+    // optionalServices: ["heart_rate"],
   };
   device = await navigator.bluetooth.requestDevice(options);
   device.addEventListener("gattserverdisconnected", connectDevice);
