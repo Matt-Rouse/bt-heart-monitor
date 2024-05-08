@@ -29,7 +29,7 @@ async function requestDevice() {
     acceptAllDevices: true,
     // optionalServices: ["heart_rate"],
   };
-  device = await navigator.bluetooth.requestDevice(options);
+  device = await navigator.bluetooth.requestDevice();
   device.addEventListener("gattserverdisconnected", connectDevice);
 }
 
