@@ -8,6 +8,9 @@ const beatAudio = document.querySelector("audio");
 const connectBTN = document.querySelector(".connect");
 const connectUI = document.querySelector(".connect-ui");
 
+var RXTX_SERVICE = 0xdfb0;
+var RXTX_CHARACTERISTIC = 0xdfb2;
+
 let device;
 let heartRate;
 
@@ -31,7 +34,7 @@ async function requestDevice() {
     }],
     // optionalServices: ["heart_rate"],
   };
-  device = await navigator.bluetooth.requestDevice(options);
+  device = await navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: [RXTX_SERVICE] });
   device.addEventListener("gattserverdisconnected", connectDevice);
 }
 
