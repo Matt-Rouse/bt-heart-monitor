@@ -9,7 +9,7 @@ const connectBTN = document.querySelector(".connect");
 const connectUI = document.querySelector(".connect-ui");
 
 var RXTX_SERVICE = 0xdfb0;
-var RXTX_CHARACTERISTIC = 0xdfb2;
+var RXTX_CHARACTERISTIC = 0xdfb1;
 
 let device;
 let heartRate;
@@ -42,9 +42,9 @@ async function connectDevice() {
   if (device.gatt.connected) return;
 
   const server = await device.gatt.connect();
-  const service = await server.getPrimaryService("heart_rate");
+  const service = await server.getPrimaryService(RXTX_SERVICE);
 
-  heartRate = await service.getCharacteristic("heart_rate_measurement");
+  heartRate = await service.getCharacteristic(RXTX_CHARACTERISTIC);
   heartRate.addEventListener("characteristicvaluechanged", handleRateChange);
   console.log("connected");
 }
