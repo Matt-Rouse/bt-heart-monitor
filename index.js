@@ -34,7 +34,10 @@ async function requestDevice() {
     }],
     // optionalServices: ["heart_rate"],
   };
-  device = await navigator.bluetooth.requestDevice({optionalServices: ["0000dfb0-0000-1000-8000-00805f9b34fb"], acceptAllDevices: true});
+  const device = await navigator.bluetooth.requestDevice({
+      filters: [{ name: 'Bluno' }],
+      optionalServices: ['0000dfb0-0000-1000-8000-00805f9b34fb']
+  });
   device.addEventListener("gattserverdisconnected", connectDevice);
 }
 
