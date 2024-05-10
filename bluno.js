@@ -1,8 +1,8 @@
 document.getElementById('connect').addEventListener('click', async () => {
     try {
-        // Request Bluetooth device
+        // Request Bluetooth device with no filters (broad search)
         const device = await navigator.bluetooth.requestDevice({
-            filters: [{ name: 'Bluno' }],
+            acceptAllDevices: true,
             optionalServices: ['0000dfb0-0000-1000-8000-00805f9b34fb']
         });
 
