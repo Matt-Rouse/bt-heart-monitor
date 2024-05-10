@@ -1,13 +1,23 @@
 document.getElementById('connect').addEventListener('click', async () => {
     try {
-        // Request Bluetooth device with no filters (broad search)
+
+        document.getElementById('connection').innerText = "Searching...";
+
+        // Request Bluetooth device with a specific address
         const device = await navigator.bluetooth.requestDevice({
-            acceptAllDevices: true,
+            filters: [{
+                // Specific address (example: '12:34:56:78:9A:BC')
+                address: 'D0:39:72:E4:A8:43'
+            }],
             optionalServices: ['0000dfb0-0000-1000-8000-00805f9b34fb']
         });
 
+        document.getElementById('connection').innerText = "Connecting...";
+
         // Connect to the device
         const server = await device.gatt.connect();
+
+        document.getElementById('connection').innerText = "Connected";
 
         // Get the primary service
         const service = await server.getPrimaryService('0000dfb0-0000-1000-8000-00805f9b34fb');
