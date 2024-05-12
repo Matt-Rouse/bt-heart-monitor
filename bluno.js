@@ -1,41 +1,36 @@
 document.getElementById('connect').addEventListener('click', async () => {
     try {
-
-        document.getElementById('connection').innerText = "Searching...";
-
-        // Request Bluetooth device with a specific address
+        // Request Bluetooth device
         const device = await navigator.bluetooth.requestDevice({
-            filters: [{
-                // Specific address (example: '12:34:56:78:9A:BC')
-                address: 'D0:39:72:E4:A8:43'
-            }],
+            acceptAllDevices: true,
             optionalServices: ['0000dfb0-0000-1000-8000-00805f9b34fb']
         });
 
-        document.getElementById('connection').innerText = "Connecting...";
+        // Check if the selected device is your Bluno
+        if (device.name === 'Your Bluno Device Name') {
+            // Connect to the device
+            const server = await device.gatt.connect();
 
-        // Connect to the device
-        const server = await device.gatt.connect();
+            // Get the primary service
+            const service = await server.getPrimaryService('0000dfb0-0000-1000-8000-00805f9b34fb');
 
-        document.getElementById('connection').innerText = "Connected";
+            // Get the characteristic
+            const characteristic = await service.getCharacteristic('0000dfb1-0000-1000-8000-00805f9b34fb');
 
-        // Get the primary service
-        const service = await server.getPrimaryService('0000dfb0-0000-1000-8000-00805f9b34fb');
+            console.log('Connected to Bluno');
+            // Read the initial value
+            const value = await characteristic.readValue();
+            console.log('Initial Value:', new TextDecoder().decode(value));
 
-        // Get the characteristic
-        const characteristic = await service.getCharacteristic('0000dfb1-0000-1000-8000-00805f9b34fb');
-
-        console.log('Connected to Bluno');
-        // Read the initial value
-        const value = await characteristic.readValue();
-        console.log('Initial Value:', new TextDecoder().decode(value));
-
-        // Set up notifications
-        await characteristic.startNotifications();
-        characteristic.addEventListener('characteristicvaluechanged', (event) => {
-            const value = new TextDecoder().decode(event.target.value);
-            console.log('New Value:', value);
-        });
+            // Set up notifications
+            await characteristic.startNotifications();
+            characteristic.addEventListener('characteristicvaluechanged', (event) => {
+                const value = new TextDecoder().decode(event.target.value);
+                console.log('New Value:', value);
+            });
+        } else {
+            console.log('Selected device is not your Bluno.');
+        }
 
     } catch (error) {
         console.error('Failed to connect', error);
